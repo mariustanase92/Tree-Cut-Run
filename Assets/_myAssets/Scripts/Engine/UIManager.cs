@@ -119,10 +119,11 @@ public class UIManager : MonoBehaviour
 
     void CollectCash()
     {
+        BusSystem.CallSoundPlay(SoundEffects.PickIngot);
         BusSystem.CallAddCash(30);
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 5; i++)
         {
-            SpawnCoin(coinSpawnOrigin.transform.position);
+            SpawnCoin(coinSpawnOrigin.transform.position);    
         }
     }
 }
