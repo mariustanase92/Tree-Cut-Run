@@ -19,7 +19,7 @@ public class CharacterMovement : MonoBehaviour
     GameObject _chainsawPrefab;
     GameObject _newChainsaw;
    
-    private bool isPlaying = false;
+    bool _isPlaying = false;
     bool _canMove = true;
 
     private Transform thisT;
@@ -72,7 +72,7 @@ public class CharacterMovement : MonoBehaviour
 
     void Update()
     {
-        if (!isPlaying) return;
+        if (!_isPlaying) return;
 
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Space))
@@ -129,7 +129,7 @@ public class CharacterMovement : MonoBehaviour
     {
         if (other.CompareTag(Const.END_TAG))
         {
-            if (!isPlaying) return;
+            if (!_isPlaying) return;
 
             bool isWin = true;
             BusSystem.CallLevelDone(isWin);
@@ -174,8 +174,11 @@ public class CharacterMovement : MonoBehaviour
             EnableTurboMode();
             BusSystem.CallPhaseOneEnd();
         }
-       // else if (_isUsingChainsaw || _isInTurboMode)
-           // BusSystem.CallSoundPlay(SoundEffects.Chainsaw);
+        else if (other.CompareTag(Const.TAG_OBSTACLE))
+        {
+            if(_isPlaying)
+                BusSystem.CallLevelDone(false);
+        }
     }
 
     private void OnTriggerStay(Collider other)
@@ -189,7 +192,7 @@ public class CharacterMovement : MonoBehaviour
                     _canMove = true;
                     _isCutting = false;
 
-                    if(isPlaying)
+                    if(_isPlaying)
                         anim.Play(Const.WALK_ANIM);
 
                     if (_newAxe != null)
@@ -199,7 +202,7 @@ public class CharacterMovement : MonoBehaviour
                 {
                     _canMove = false;
 
-                    if (isPlaying)
+                    if (_isPlaying)
                     {
                         _isCutting = true;
                         anim.Play(Const.CHOP_ANIM);
@@ -220,14 +223,14 @@ public class CharacterMovement : MonoBehaviour
             if(_newAxe != null)
                 _newAxe.GetComponent<Axe>().SetCanCut(false);
 
-            if (!_isUsingChainsaw && !_isInTurboMode && isPlaying)
+            if (!_isUsingChainsaw && !_isInTurboMode && _isPlaying)
                 anim.Play(Const.WALK_ANIM);
         }
     }
 
     private void Init()
     {
-        isPlaying = true;
+        _isPlaying = true;
         _isCutting = false;
          _canMove = true;
 
@@ -245,7 +248,7 @@ public class CharacterMovement : MonoBehaviour
     private void HandleNewLevelLoad()
     {
         transform.localEulerAngles = Vector3.zero;
-        isPlaying = false;
+        _isPlaying = false;
 
         thisT.localPosition = new Vector3(0, 0, 0);
         thisT.GetChild(0).localEulerAngles = Vector3.zero;
@@ -260,7 +263,7 @@ public class CharacterMovement : MonoBehaviour
     {
         Camera.main.transform.parent = null;
         thisT.GetChild(0).localEulerAngles = Vector3.zero;
-        isPlaying = false;
+        _isPlaying = false;
 
         GetComponent<Rigidbody>().isKinematic = true;
         DisableTurboMode();
@@ -351,7 +354,7 @@ public class CharacterMovement : MonoBehaviour
             EnableAxeHP();
         }
         
-        if(isPlaying)
+        if(_isPlaying)
             anim.Play(Const.WALK_ANIM);
 
         BusSystem.CallSoundPlay(SoundEffects.Hit1);

@@ -26,5 +26,6 @@ public static class Const
     public const string TAG_INGOT = "Ingot";
     public const string TAG_AXE = "Axe";
     public const string TAG_CHECKPOINT = "PhaseOne";
+    public const string TAG_OBSTACLE = "Obstacle";
 
 }
