@@ -1088,11 +1088,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PhaseOneEnd
       objectReference: {fileID: 0}
-    - target: {fileID: 8685863586510720428, guid: ef3501460fe63a849a406e27eea65765,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8827895650046295098, guid: ef3501460fe63a849a406e27eea65765,
         type: 3}
       propertyPath: m_RootOrder
