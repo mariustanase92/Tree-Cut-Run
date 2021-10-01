@@ -39,7 +39,7 @@ public class UIManager : MonoBehaviour
         BusSystem.OnLevelDone += HandleLevelDone;
         BusSystem.OnUpdateCoins += HandleUpdateCoins;
         BusSystem.OnPhaseOneEnd += EnableCutTreesText;
-        BusSystem.OnTreeHit += EarnWood;
+        BusSystem.OnTreeChopped += CollectCash;
     }
 
     private void OnDisable()
@@ -47,7 +47,7 @@ public class UIManager : MonoBehaviour
         BusSystem.OnLevelDone -= HandleLevelDone;
         BusSystem.OnUpdateCoins -= HandleUpdateCoins;
         BusSystem.OnPhaseOneEnd -= EnableCutTreesText;
-        BusSystem.OnTreeHit -= EarnWood;
+        BusSystem.OnTreeChopped -= CollectCash;
     }
 
     private void Start()
@@ -117,9 +117,9 @@ public class UIManager : MonoBehaviour
         FunctionTimer.Create(() => _cutTreesText.enabled = false, 4f);
     }
 
-    void EarnWood()
+    void CollectCash()
     {
-        BusSystem.CallAddCash(3);
+        BusSystem.CallAddCash(30);
         for (int i = 0; i < 3; i++)
         {
             SpawnCoin(coinSpawnOrigin.transform.position);
