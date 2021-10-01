@@ -1,0 +1,6 @@
+Important!
+
+1) Build Settings: Build App Bundle (Google Play)
+2) AndroidManifest.xml : Debuggable false
+3) Player Settings: Scripting Backednd IL2CPP, Target Architectures ARMv7 & ARM64, Minimum API Level 29
+
