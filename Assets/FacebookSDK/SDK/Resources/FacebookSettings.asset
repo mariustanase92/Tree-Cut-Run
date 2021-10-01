@@ -16,9 +16,9 @@ MonoBehaviour:
   clientTokens:
   - 
   appIds:
-  - 2818899351665748
+  - 1218893351667745
   appLabels:
-  - Luberjack Run
+  - Tree Cut Run
   cookie: 1
   logging: 1
   status: 1
