@@ -23,6 +23,7 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI levelText;
     [SerializeField] private TextMeshProUGUI _cutTreesText;
+    [SerializeField] private Image _perfectIcon;
 
     //Coins
     [SerializeField]
@@ -36,12 +37,17 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _coinsEarnedText;
 
+    //Coroutines
+    IEnumerator _storedCoroutine;
+
     private void OnEnable()
     {
         BusSystem.OnLevelDone += HandleLevelDone;
         BusSystem.OnUpdateCoins += HandleUpdateCoins;
         BusSystem.OnPhaseOneEnd += EnableCutTreesText;
         BusSystem.OnAddCash += CollectCash;
+        BusSystem.OnPerfectRound += ShowPerfectIcon;
+        BusSystem.OnNewLevelLoad += HidePerfectIcon;
     }
 
     private void OnDisable()
@@ -50,6 +56,8 @@ public class UIManager : MonoBehaviour
         BusSystem.OnUpdateCoins -= HandleUpdateCoins;
         BusSystem.OnPhaseOneEnd -= EnableCutTreesText;
         BusSystem.OnAddCash -= CollectCash;
+        BusSystem.OnPerfectRound -= ShowPerfectIcon;
+        BusSystem.OnNewLevelLoad -= HidePerfectIcon;
     }
 
     private void Start()
@@ -89,11 +97,6 @@ public class UIManager : MonoBehaviour
             _cutTreesText.enabled = false;
             endScreenWin.SetActive(true);
             StartCoroutine(DelayContinueButton());
-           // BusSystem.CallAddCash(100);
-            //for (int i = 0; i < 10; i++)
-            //{
-            //    SpawnCoin(coinSpawnOrigin.transform.position);
-            //}
         }
         else
         {
@@ -133,9 +136,34 @@ public class UIManager : MonoBehaviour
 
     void ShowCoinsEarnedText(int amount)
     {
-        _coinsEarnedText.enabled = false;
+        if (_storedCoroutine != null)
+            StopCoroutine(_storedCoroutine);
+
+        _storedCoroutine = HideCoinsEarnedText();
         _coinsEarnedText.enabled = true;
         _coinsEarnedText.text = $"+{amount}";
-        FunctionTimer.Create(() => _coinsEarnedText.enabled = false, 1);
+
+        if (amount >= 100)
+            _coinsEarnedText.color = Color.green;
+        else
+            _coinsEarnedText.color = Color.white;
+
+        StartCoroutine(_storedCoroutine);
+    }
+
+    IEnumerator HideCoinsEarnedText()
+    {
+        yield return new WaitForSeconds(2);
+        _coinsEarnedText.enabled = false;
+    }
+
+    void ShowPerfectIcon()
+    {
+        _perfectIcon.gameObject.SetActive(true);
+    }
+
+    void HidePerfectIcon()
+    {
+        _perfectIcon.gameObject.SetActive(false);
     }
 }

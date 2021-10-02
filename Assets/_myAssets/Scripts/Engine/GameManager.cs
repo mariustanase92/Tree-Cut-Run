@@ -60,7 +60,6 @@ public class GameManager : MonoBehaviour
     internal void StartGame()
     {
         GameAnalyticsSDK.GameAnalytics.NewProgressionEvent(GameAnalyticsSDK.GAProgressionStatus.Start, string.Format("{0}", currentLevel % levelMan.GetLevelLenght()));
-        ResetLogCount();
     }
 
     private void HandleLevelDone(bool isWin)

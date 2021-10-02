@@ -42,6 +42,8 @@ public class Build : MonoBehaviour
             if (GetComponentInChildren<Build>() != null)
             {
                 BusSystem.CallLevelDone(true);
+                BusSystem.CallPerfectRound();
+                BusSystem.CallAddCash(100);
                 ShowPieces(true);
             }
 

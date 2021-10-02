@@ -275,6 +275,7 @@ MonoBehaviour:
   continueButton: {fileID: 1211409797651243865}
   levelText: {fileID: 1211409795928195072}
   _cutTreesText: {fileID: 2044502285}
+  _perfectIcon: {fileID: 3603874105117450418}
   coinToSpawn: {fileID: 6513486497114653205, guid: 4240a57fe12be7940aea2bca2d271bc7,
     type: 3}
   coinContainer: {fileID: 1211409797227499249}
@@ -605,12 +606,6 @@ MonoBehaviour:
   levelList:
   - {fileID: 7572273857615237135, guid: 038c8e04837f1ef4c96c4932b680a708, type: 3}
   - {fileID: 7572273857615237135, guid: be010135c405bb9499b6c800406c5030, type: 3}
-  - {fileID: 7572273857615237135, guid: 1a4358c49e168fe4383567234b36bd6b, type: 3}
-  - {fileID: 7572273857615237135, guid: c90337e8c2d60b8429354f028e221db2, type: 3}
-  - {fileID: 7572273857615237135, guid: 8408c92b21c45ab4580df18225e8e353, type: 3}
-  - {fileID: 7572273857615237135, guid: 16e86182972a12e47905c5bb4e704219, type: 3}
-  - {fileID: 7572273857615237135, guid: 07d1c77f3601822458e307e23817aa0b, type: 3}
-  - {fileID: 7572273857615237135, guid: 09ed10b7c6c10fd43a0a8c27f7424216, type: 3}
   playzone: {fileID: 2068366229}
   characters:
   - {fileID: 281809215}
@@ -1573,6 +1568,18 @@ MonoBehaviour:
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3603874105117450418 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3953975437638640975, guid: e2a74f0f4b9a1074fa33beebce447b59,
+    type: 3}
+  m_PrefabInstance: {fileID: 3603874105117450416}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &4197085696169024493 stripped

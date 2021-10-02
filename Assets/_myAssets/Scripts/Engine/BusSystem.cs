@@ -24,6 +24,8 @@ public static class BusSystem
     public static void CallTreeHit() { OnTreeHit?.Invoke(); }
     public static Action OnTreeChopped;
     public static void CallTreeChopped() { OnTreeChopped?.Invoke(); }
+    public static Action OnPerfectRound;
+    public static void CallPerfectRound() { OnPerfectRound?.Invoke(); }
 
     //Polish
 
