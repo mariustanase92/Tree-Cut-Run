@@ -33,13 +33,15 @@ public class UIManager : MonoBehaviour
     private Transform coinSpawnOrigin;
     [SerializeField]
     private TextMeshProUGUI coinsText;
+    [SerializeField]
+    private TextMeshProUGUI _coinsEarnedText;
 
     private void OnEnable()
     {
         BusSystem.OnLevelDone += HandleLevelDone;
         BusSystem.OnUpdateCoins += HandleUpdateCoins;
         BusSystem.OnPhaseOneEnd += EnableCutTreesText;
-        BusSystem.OnTreeChopped += CollectCash;
+        BusSystem.OnAddCash += CollectCash;
     }
 
     private void OnDisable()
@@ -47,7 +49,7 @@ public class UIManager : MonoBehaviour
         BusSystem.OnLevelDone -= HandleLevelDone;
         BusSystem.OnUpdateCoins -= HandleUpdateCoins;
         BusSystem.OnPhaseOneEnd -= EnableCutTreesText;
-        BusSystem.OnTreeChopped -= CollectCash;
+        BusSystem.OnAddCash -= CollectCash;
     }
 
     private void Start()
@@ -117,13 +119,23 @@ public class UIManager : MonoBehaviour
         FunctionTimer.Create(() => _cutTreesText.enabled = false, 4f);
     }
 
-    void CollectCash()
+    void CollectCash(int treeHP)
     {
         BusSystem.CallSoundPlay(SoundEffects.PickIngot);
-        BusSystem.CallAddCash(30);
-        for (int i = 0; i < 5; i++)
+        
+        for (int i = 0; i < 10; i++)
         {
             SpawnCoin(coinSpawnOrigin.transform.position);    
         }
+
+        ShowCoinsEarnedText(treeHP);
+    }
+
+    void ShowCoinsEarnedText(int amount)
+    {
+        _coinsEarnedText.enabled = false;
+        _coinsEarnedText.enabled = true;
+        _coinsEarnedText.text = $"+{amount}";
+        FunctionTimer.Create(() => _coinsEarnedText.enabled = false, 1);
     }
 }

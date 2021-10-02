@@ -58,7 +58,7 @@ public class CharacterMovement : MonoBehaviour
         BusSystem.OnNewLevelLoad += HandleNewLevelLoad;
         BusSystem.OnNewLevelLoad += DisableAxeHP;
         BusSystem.OnLevelDone += HandleLevelDone;
-        BusSystem.OnPhaseOneEnd += EnableTurboMode;
+       // BusSystem.OnPhaseOneEnd += EnableTurboMode;
     }
 
     private void OnDisable()
@@ -67,7 +67,7 @@ public class CharacterMovement : MonoBehaviour
         BusSystem.OnNewLevelLoad -= HandleNewLevelLoad;
         BusSystem.OnNewLevelLoad -= DisableAxeHP;
         BusSystem.OnLevelDone -= HandleLevelDone;
-        BusSystem.OnPhaseOneEnd -= EnableTurboMode;
+       // BusSystem.OnPhaseOneEnd -= EnableTurboMode;
     }
 
     void Update()
@@ -100,10 +100,13 @@ public class CharacterMovement : MonoBehaviour
         }
         else if(_isUsingChainsaw)
         {
-            _chainsawTime -= Time.deltaTime;
+            _chainsawTime -= Time.deltaTime * .9f;
+            UpdateHPText();
 
             if(_chainsawTime <= 0)
-                DestroyChainsaw();
+            {
+                BusSystem.CallLevelDone(true);
+            }        
         }
 
         Vector3 clampedPosition = thisT.localPosition;
@@ -267,8 +270,10 @@ public class CharacterMovement : MonoBehaviour
 
         GetComponent<Rigidbody>().isKinematic = true;
         DisableTurboMode();
-       
-        if(isWin)
+        DisableAxeHP();
+        DestroyChainsaw();
+
+        if (isWin)
         {
             Vibration.VibratePeek();
             BusSystem.CallSoundPlay(SoundEffects.Win);
@@ -316,7 +321,6 @@ public class CharacterMovement : MonoBehaviour
         if (_newAxe != null)
             Destroy(_newAxe);
 
-        EnableAxeHP();
         _axePrefab = Resources.Load<GameObject>("Axe");
         GameObject _copyAxe = Instantiate(_axePrefab, _weaponMuzzle.transform.position, _weaponMuzzle.transform.rotation);
         _newAxe = _copyAxe;
@@ -325,12 +329,14 @@ public class CharacterMovement : MonoBehaviour
         _newAxe.transform.localEulerAngles = new Vector3(60, -180, 0);
         _newAxe.GetComponent<Axe>().SetTextMesh(_axeHP.GetComponent<TextMesh>());
         _newAxe.GetComponent<Axe>().SetHitBoxArea(_hitBoxArea);
+        EnableAxeHP();
     }
 
     void CreateChainsaw()
     {
         if (_newChainsaw == null)
         {
+            EnableAxeHP();
             _chainsawPrefab = Resources.Load<GameObject>("ChainsawWeapon");
             GameObject _copyChainsaw = Instantiate(_chainsawPrefab, _weaponMuzzle.transform.position, _weaponMuzzle.transform.rotation);
             _newChainsaw = _copyChainsaw;
@@ -338,7 +344,18 @@ public class CharacterMovement : MonoBehaviour
             _newChainsaw.transform.localPosition = new Vector3(-0.003f, 0.04f, -0.044f);
             _newChainsaw.transform.localEulerAngles = new Vector3(127.551f, 169.113f, -86.07999f);
             _glowFXs.SetActive(true);
+
+            if (_newAxe != null)
+            {
+                _chainsawTime = _newAxe.GetComponent<Axe>().GetCurrentHP();
+            }
+
+            if (_chainsawTime <= 1)
+                _chainsawTime = 2;
         }
+
+        if (_newAxe != null)
+            Destroy(_newAxe);
 
         BusSystem.CallSoundPlay(SoundEffects.Chainsaw);
     }
@@ -346,18 +363,21 @@ public class CharacterMovement : MonoBehaviour
     void DestroyChainsaw()
     {
         _isUsingChainsaw = false;
-        Destroy(_newChainsaw);
+        
+        if(_newChainsaw != null)
+            Destroy(_newChainsaw);
 
         if(_newAxe != null)
         {
             _newAxe.SetActive(true);
-            EnableAxeHP();
+           // EnableAxeHP();
         }
-        
+
+        /*
         if(_isPlaying)
             anim.Play(Const.WALK_ANIM);
 
-        BusSystem.CallSoundPlay(SoundEffects.Hit1);
+        BusSystem.CallSoundPlay(SoundEffects.Hit1); */
     }
 
     void SetIsUsingChainsaw(bool useChainsaw)
@@ -367,16 +387,22 @@ public class CharacterMovement : MonoBehaviour
 
         if (useChainsaw)
         {
-            DisableAxeHP();
-            _newAxe.SetActive(false);
+            //DisableAxeHP();
+            if(_newAxe != null)
+                _newAxe.SetActive(false);
         }
     }
 
     void EnableTurboMode()
     {
-        _isInTurboMode = true;
-        DisableAxeHP();
-        Destroy(_newAxe);
+        SetIsUsingChainsaw(true);
+
+       // _isInTurboMode = true;
+        //DisableAxeHP();
+        
+        
+        
+        
         anim.Play(Const.CHAINSAWWALK_ANIM);
         CreateChainsaw();
     }
@@ -384,7 +410,7 @@ public class CharacterMovement : MonoBehaviour
     void DisableTurboMode(bool levelEnd = true)
     {
         _isInTurboMode = false;
-        DestroyChainsaw();
+       // DestroyChainsaw();
     }
 
     public Transform GetAxeHP()
@@ -396,7 +422,10 @@ public class CharacterMovement : MonoBehaviour
     {
         _axeHP.GetComponent<MeshRenderer>().enabled = true;
         _axeHP.GetChild(0).gameObject.SetActive(true);
-        FunctionTimer.Create(() => _newAxe.GetComponent<Axe>().UpdateAxeText(), .1f);
+
+
+        if (_newAxe != null)
+            _newAxe.GetComponent<Axe>().UpdateAxeText();
     }
 
     public void DisableAxeHP()
@@ -408,6 +437,12 @@ public class CharacterMovement : MonoBehaviour
     public void PlayHPFXs()
     {
         _axeHP.GetComponentInChildren<ParticleSystem>().Play();
+    }
+
+    public void UpdateHPText()
+    {
+        if(_axeHP.GetComponent<TextMesh>() != null)
+            _axeHP.GetComponent<TextMesh>().text = Mathf.RoundToInt(_chainsawTime).ToString();
     }
 
 }

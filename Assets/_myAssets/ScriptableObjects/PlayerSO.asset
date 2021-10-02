@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 723f74afb173ed24eb512982620db7e5, type: 3}
-  m_Name: Data
+  m_Name: PlayerSO
   m_EditorClassIdentifier: 
   laneLimit: 5.5
-  moveSpeed: 15
-  steerSpeed: 2
+  moveSpeed: 23
+  steerSpeed: 0.8

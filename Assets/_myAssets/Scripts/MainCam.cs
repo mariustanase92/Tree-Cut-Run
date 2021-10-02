@@ -37,5 +37,7 @@ public class MainCam : MonoBehaviour
     void StopShaking(bool shake)
     {
         _canShake = false;
+        _tween.DOPause();
+       
     }
 }

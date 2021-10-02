@@ -250,9 +250,12 @@ public class Tree : MonoBehaviour
             FunctionTimer.Create(() => Vibration.VibratePop(), 2f);
 
         FunctionTimer.Create(() => BusSystem.CallTreeChopped(), .5f);
+        //FunctionTimer.Create(() => BusSystem.CallAddCash(10 * _requiredHits), .5f);
 
         _logBase.GetComponent<BoxCollider>().enabled = false;
         _logBase.GetComponent<MeshRenderer>().enabled = false;
+
+        BusSystem.CallAddCash(10 * _requiredHits);
     }
 
     public bool IsTreeChopped()
@@ -304,34 +307,6 @@ public class Tree : MonoBehaviour
     float HexToFloatNormalized(string hex)
     {
         return HexToDec(hex);
-    }
-
-    Color GetColorFromString(string hexString)
-    {
-        float red = HexToFloatNormalized(hexString.Substring(0, 2));
-        float green = HexToFloatNormalized(hexString.Substring(2, 2));
-        float blue = HexToFloatNormalized(hexString.Substring(4, 2));
-        float alpha = 1f;
-
-        if (hexString.Length >= 8)
-            alpha = HexToFloatNormalized(hexString.Substring(6, 2));
-
-        return new Color(red, green, blue, alpha);
-    }
-
-    string GetStringFromColor(Color color, bool useAlpha = false)
-    {
-        string red = FloatNormalizedToHex(color.r);
-        string green = FloatNormalizedToHex(color.g);
-        string blue = FloatNormalizedToHex(color.b);
-
-        if(!useAlpha)
-            return red + green + blue;
-        else
-        {
-            string alpha = FloatNormalizedToHex(color.a);
-            return red + green + blue + alpha;
-        }
     }
 
     void CreateWood()

@@ -174,4 +174,9 @@ public class Axe : MonoBehaviour
     {
         _hitBox = hitArea;
     }
+
+    public int GetCurrentHP()
+    {
+        return _currHP;
+    }
 }
