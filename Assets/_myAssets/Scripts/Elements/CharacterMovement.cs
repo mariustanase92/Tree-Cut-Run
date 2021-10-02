@@ -109,9 +109,9 @@ public class CharacterMovement : MonoBehaviour
             }        
         }
 
-        Vector3 clampedPosition = thisT.localPosition;
-        clampedPosition.x = Mathf.Clamp(clampedPosition.x, -dataSO.laneLimit, dataSO.laneLimit);
-        thisT.localPosition = clampedPosition;
+       // Vector3 clampedPosition = thisT.localPosition;
+       // clampedPosition.x = Mathf.Clamp(clampedPosition.x, -dataSO.laneLimit, dataSO.laneLimit);
+        //thisT.localPosition = clampedPosition;
 
         if(_isCutting)
         {

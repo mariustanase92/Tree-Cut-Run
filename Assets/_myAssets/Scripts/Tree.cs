@@ -47,6 +47,8 @@ public class Tree : MonoBehaviour
     //Chainsaw
     bool _isUsingChainsaw = false;
 
+    bool _isBonus = false;
+
     private void OnEnable()
     {
         //14, 8, 33
@@ -72,6 +74,7 @@ public class Tree : MonoBehaviour
         BusSystem.OnNewLevelLoad += EnableTree;
         BusSystem.OnNewLevelStart += SetHP;
         BusSystem.OnTreeChopped += ChopSoundEffect;
+        BusSystem.OnPhaseOneEnd += ChangeToBonusColor;
 
         _logList.Clear();
         HideText();
@@ -84,6 +87,7 @@ public class Tree : MonoBehaviour
         BusSystem.OnNewLevelLoad -= EnableTree;
         BusSystem.OnNewLevelStart -= SetHP;
         BusSystem.OnTreeChopped -= ChopSoundEffect;
+        BusSystem.OnPhaseOneEnd -= ChangeToBonusColor;
     }
 
     private void Awake()
@@ -249,13 +253,13 @@ public class Tree : MonoBehaviour
         if (GameManager.Instance.canVibrate)  
             FunctionTimer.Create(() => Vibration.VibratePop(), 2f);
 
-        FunctionTimer.Create(() => BusSystem.CallTreeChopped(), .5f);
-        //FunctionTimer.Create(() => BusSystem.CallAddCash(10 * _requiredHits), .5f);
+        BusSystem.CallTreeChopped();
 
         _logBase.GetComponent<BoxCollider>().enabled = false;
         _logBase.GetComponent<MeshRenderer>().enabled = false;
 
-        BusSystem.CallAddCash(10 * _requiredHits);
+        if(_isBonus)
+            BusSystem.CallAddCash(10 * _requiredHits);
     }
 
     public bool IsTreeChopped()
@@ -349,6 +353,19 @@ public class Tree : MonoBehaviour
         foreach(GameObject child in _logList)
         {
             child.transform.position = Vector3.MoveTowards(child.transform.position, _player.position + new Vector3(0, 5, 0), 3f * Time.deltaTime);
+        }
+    }
+
+    void ChangeToBonusColor()
+    {
+        _isBonus = true;
+        Color bonusColor = GetComponentInChildren<MeshRenderer>().material.color = Color.green;
+
+        foreach(Transform child in transform)
+        {
+            MeshRenderer childMesh = child.GetComponent<MeshRenderer>();
+            if (childMesh != null)
+                childMesh.material.color = bonusColor;
         }
     }
 }

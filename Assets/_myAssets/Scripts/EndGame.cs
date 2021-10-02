@@ -16,7 +16,6 @@ public class EndGame : MonoBehaviour
         BusSystem.OnLevelDone -= PlayConfetti;
     }
 
-
     void PlayConfetti(bool won)
     {
         if(won)

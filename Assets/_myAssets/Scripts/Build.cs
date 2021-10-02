@@ -26,13 +26,26 @@ public class Build : MonoBehaviour
         _particle = _shineFX.GetComponent<ParticleSystem>();
         _activeWood = 0;
         BusSystem.OnNewLevelStart += HideAllPieces;
-        BusSystem.OnLevelDone += ShowPieces;
+        //BusSystem.OnLevelDone += ShowPieces;
     }
 
     private void OnDisable()
     {
         BusSystem.OnNewLevelStart -= HideAllPieces;
-        BusSystem.OnLevelDone -= ShowPieces;
+        //BusSystem.OnLevelDone -= ShowPieces;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag(Const.TAG_PLAYER))
+        {
+            if (GetComponentInChildren<Build>() != null)
+            {
+                BusSystem.CallLevelDone(true);
+                ShowPieces(true);
+            }
+
+        }
     }
 
     private void Update()
@@ -40,7 +53,7 @@ public class Build : MonoBehaviour
         MoveWood(_activeWood);
     }
 
-    void ShowPieces(bool isWin)
+    public void ShowPieces(bool isWin)
     {
         if(isWin)
         {

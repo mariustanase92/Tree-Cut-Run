@@ -5465,7 +5465,7 @@ GameObject:
   - component: {fileID: 3401600304630082132}
   - component: {fileID: 2935872006935187876}
   m_Layer: 9
-  m_Name: LumberjackRun01@Idle
+  m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
