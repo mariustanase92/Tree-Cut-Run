@@ -5038,7 +5038,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 111}
+  m_AnchoredPosition: {x: 0, y: 163}
   m_SizeDelta: {x: 480, y: 232}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6334629472591296195
@@ -5070,8 +5070,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: +100
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e49b92abc77d9d44ca096203cc43472d, type: 2}
-  m_sharedMaterial: {fileID: 2535067757461206363, guid: e49b92abc77d9d44ca096203cc43472d,
+  m_fontAsset: {fileID: 11400000, guid: b9ff30957885fb740831384abc2f8505, type: 2}
+  m_sharedMaterial: {fileID: 2535067757461206363, guid: b9ff30957885fb740831384abc2f8505,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -5138,13 +5138,13 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 7672509223899510900}
-    characterCount: 4
+    characterCount: 0
     spriteCount: 0
     spaceCount: 0
-    wordCount: 2
+    wordCount: 0
     linkCount: 0
-    lineCount: 1
-    pageCount: 1
+    lineCount: 0
+    pageCount: 0
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0

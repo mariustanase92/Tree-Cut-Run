@@ -72,7 +72,7 @@ public class GameManager : MonoBehaviour
         {
             currentLevel++;
 
-            if (currentLevel >= levelMan.GetLevelLenght())
+            if (currentLevel > levelMan.GetLevelLenght())
                 currentLevel = 0;
 
 
@@ -100,5 +100,10 @@ public class GameManager : MonoBehaviour
     void ResetLogCount()
     {
         AddCash(-100);
+    }
+
+    public GameObject GetCurrentPlayzone()
+    {
+       return levelMan.GetCurrentPlayzone();
     }
 }

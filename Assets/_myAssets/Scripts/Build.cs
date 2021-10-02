@@ -7,17 +7,17 @@ public class Build : MonoBehaviour
 
     [SerializeField] float _spendWoodSpeed = 50f;
     [SerializeField] float _buildSpeed = .5f;
-
-
     [SerializeField] GameObject _shineFX;
+    
     ParticleSystem _particle;
     Transform _player;
-
     GameObject _woodPrefab;
+
     List<GameObject> _woodPieces = new List<GameObject>();
     int _activeWood = 0;
 
     bool _startBuilding = false;
+    bool _levelDone = false;
 
     private void OnEnable()
     {
@@ -26,13 +26,11 @@ public class Build : MonoBehaviour
         _particle = _shineFX.GetComponent<ParticleSystem>();
         _activeWood = 0;
         BusSystem.OnNewLevelStart += HideAllPieces;
-        //BusSystem.OnLevelDone += ShowPieces;
     }
 
     private void OnDisable()
     {
         BusSystem.OnNewLevelStart -= HideAllPieces;
-        //BusSystem.OnLevelDone -= ShowPieces;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -41,12 +39,15 @@ public class Build : MonoBehaviour
         {
             if (GetComponentInChildren<Build>() != null)
             {
-                BusSystem.CallLevelDone(true);
-                BusSystem.CallPerfectRound();
-                BusSystem.CallAddCash(100);
-                ShowPieces(true);
+                if(!_levelDone)
+                {
+                    _levelDone = true;
+                    BusSystem.CallLevelDone(true);
+                    BusSystem.CallPerfectRound();
+                    BusSystem.CallAddCash(100);
+                    ShowPieces(true);
+                }       
             }
-
         }
     }
 
@@ -112,6 +113,7 @@ public class Build : MonoBehaviour
         copyWood.transform.localScale = Vector3.one * 3f;
         copyWood.transform.localPosition += new Vector3(0,.8f, -10);
         copyWood.transform.localEulerAngles += new Vector3(0, 90, 0);
+        copyWood.transform.parent = GameManager.Instance.GetCurrentPlayzone().transform;
         _woodPieces.Add(copyWood);
     }
 

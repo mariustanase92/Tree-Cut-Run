@@ -127,49 +127,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 2935872008164633921}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &392216018
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 392216020}
-  - component: {fileID: 392216019}
-  m_Layer: 0
-  m_Name: "-[ DOTween Preview \u25BA ]-"
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &392216019
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 392216018}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 502580800}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &392216020
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 392216018}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 9
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &420916813
 GameObject:
   m_ObjectHideFlags: 0
@@ -325,20 +282,6 @@ MonoBehaviour:
   coinSpawnOrigin: {fileID: 1211409796133547515}
   coinsText: {fileID: 1211409796402465822}
   _coinsEarnedText: {fileID: 3603874105117450417}
---- !u!115 &502580800
-MonoScript:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  serializedVersion: 5
-  m_Script: 
-  m_DefaultReferences: {}
-  m_Icon: {fileID: 0}
-  m_ExecutionOrder: 0
-  m_ClassName: DOTweenEditorPreview/PreviewComponent
-  m_Namespace: DG.DOTweenEditor
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -602,7 +545,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canVibrate: 0
-  currentLevel: 1
+  currentLevel: 2
   levelMan: {fileID: 1031915005}
 --- !u!114 &970850703
 MonoBehaviour:
@@ -662,6 +605,7 @@ MonoBehaviour:
   levelList:
   - {fileID: 7572273857615237135, guid: 038c8e04837f1ef4c96c4932b680a708, type: 3}
   - {fileID: 7572273857615237135, guid: 3735f5262252c0744a1b48b90b2c246b, type: 3}
+  - {fileID: 7572273857615237135, guid: 5136e4d779c40414d82ec902957df08a, type: 3}
   playzone: {fileID: 2068366229}
   characters:
   - {fileID: 281809215}

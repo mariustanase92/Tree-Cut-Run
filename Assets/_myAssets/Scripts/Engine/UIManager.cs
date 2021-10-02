@@ -136,6 +136,8 @@ public class UIManager : MonoBehaviour
 
     void ShowCoinsEarnedText(int amount)
     {
+        _coinsEarnedText.enabled = false;
+
         if (_storedCoroutine != null)
             StopCoroutine(_storedCoroutine);
 
@@ -153,7 +155,7 @@ public class UIManager : MonoBehaviour
 
     IEnumerator HideCoinsEarnedText()
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(2.5f);
         _coinsEarnedText.enabled = false;
     }
 
