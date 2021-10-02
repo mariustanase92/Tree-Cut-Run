@@ -50,7 +50,7 @@ public class CharacterMovement : MonoBehaviour
         currentSpeed = dataSO.moveSpeed;
         _axeHP = transform.Find("AxeHP");
         _capsule = GetComponent<CapsuleCollider>();
-        Physics.gravity = new Vector3(0, -25.0F, 0);
+        Physics.gravity = new Vector3(0, -35.0F, 0);
     }
 
     private void OnEnable()
