@@ -545,9 +545,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canVibrate: 0
-  currentLevel: 0
+  currentLevel: 1
   levelMan: {fileID: 1031915005}
-  cash: 0
 --- !u!114 &970850703
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -605,7 +604,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelList:
   - {fileID: 7572273857615237135, guid: 038c8e04837f1ef4c96c4932b680a708, type: 3}
-  - {fileID: 7572273857615237135, guid: be010135c405bb9499b6c800406c5030, type: 3}
+  - {fileID: 7572273857615237135, guid: 51df47014cbda264db46ba5a370557ba, type: 3}
   playzone: {fileID: 2068366229}
   characters:
   - {fileID: 281809215}
@@ -1307,6 +1306,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 701633350505162169, guid: 58c1b5025f66fa24e90959bff8e8d257,
+        type: 3}
+      propertyPath: m_Drag
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 701633350505162169, guid: 58c1b5025f66fa24e90959bff8e8d257,
+        type: 3}
+      propertyPath: m_Mass
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 701633350505162169, guid: 58c1b5025f66fa24e90959bff8e8d257,
         type: 3}
       propertyPath: m_Interpolate

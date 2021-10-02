@@ -21,11 +21,13 @@ public class GameManager : MonoBehaviour
             return _instance;
         }
     }
+
     [HideInInspector]
     public bool canVibrate;
     public int currentLevel;
     public LevelManager levelMan;
-    [SerializeField] private int cash = 0;
+    int cash = 0;
+
     private void OnEnable()
     {
         if (PlayerPrefs.HasKey(Constants.CURRENT_LEVEL))
