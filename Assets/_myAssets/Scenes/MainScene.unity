@@ -274,7 +274,7 @@ MonoBehaviour:
   endScreenLose: {fileID: 1526863531}
   continueButton: {fileID: 1211409797651243865}
   levelText: {fileID: 1211409795928195072}
-  _cutTreesText: {fileID: 2044502285}
+  _cutTreesText: {fileID: 3603874105117450419}
   _perfectIcon: {fileID: 3603874105117450418}
   coinToSpawn: {fileID: 6513486497114653205, guid: 4240a57fe12be7940aea2bca2d271bc7,
     type: 3}
@@ -546,7 +546,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canVibrate: 0
-  currentLevel: 0
+  currentLevel: 1
   levelMan: {fileID: 1031915005}
 --- !u!114 &970850703
 MonoBehaviour:
@@ -1199,18 +1199,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 330d18f0f7856fd4ab6b4b78a0625a3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2044502285 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3603874106868335037, guid: e2a74f0f4b9a1074fa33beebce447b59,
-    type: 3}
-  m_PrefabInstance: {fileID: 3603874105117450416}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2068366228
 GameObject:
   m_ObjectHideFlags: 0
@@ -1765,6 +1753,18 @@ MonoBehaviour:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3603874105117450419 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1625405476180650330, guid: e2a74f0f4b9a1074fa33beebce447b59,
+    type: 3}
+  m_PrefabInstance: {fileID: 3603874105117450416}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 

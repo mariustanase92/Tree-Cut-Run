@@ -22,7 +22,7 @@ public class UIManager : MonoBehaviour
     private GameObject continueButton;
     [SerializeField]
     private TextMeshProUGUI levelText;
-    [SerializeField] private TextMeshProUGUI _cutTreesText;
+    [SerializeField] private Image _cutTreesText;
     [SerializeField] private Image _perfectIcon;
 
     //Coins
@@ -47,7 +47,7 @@ public class UIManager : MonoBehaviour
     {
         BusSystem.OnLevelDone += HandleLevelDone;
         BusSystem.OnUpdateCoins += HandleUpdateCoins;
-        BusSystem.OnPhaseOneEnd += EnableCutTreesText;
+        BusSystem.OnPhaseOneEnd += EnableCutTreesUI;
         BusSystem.OnAddCash += CollectCash;
         BusSystem.OnPerfectRound += ShowPerfectIcon;
         BusSystem.OnNewLevelLoad += HidePerfectIcon;
@@ -58,7 +58,7 @@ public class UIManager : MonoBehaviour
     {  
         BusSystem.OnLevelDone -= HandleLevelDone;
         BusSystem.OnUpdateCoins -= HandleUpdateCoins;
-        BusSystem.OnPhaseOneEnd -= EnableCutTreesText;
+        BusSystem.OnPhaseOneEnd -= EnableCutTreesUI;
         BusSystem.OnAddCash -= CollectCash;
         BusSystem.OnPerfectRound -= ShowPerfectIcon;
         BusSystem.OnNewLevelLoad -= HidePerfectIcon;
@@ -80,13 +80,6 @@ public class UIManager : MonoBehaviour
     {
         CloseEndScreen();
     }
-
-    /*
-    public void ReplayLevel()
-    {
-        GameManager.Instance.DecreaseLevel();
-        CloseEndScreen();
-    }*/
 
     public void AdvanceLevel()
     {
@@ -140,10 +133,15 @@ public class UIManager : MonoBehaviour
         continueButton.SetActive(true);
     }
 
-    void EnableCutTreesText()
+    void EnableCutTreesUI()
     {
         _cutTreesText.enabled = true;
-        FunctionTimer.Create(() => _cutTreesText.enabled = false, 4f);
+        Invoke("DisableCutTreesUI", 3f);
+    }
+
+    void DisableCutTreesUI()
+    {
+        _cutTreesText.enabled = false;
     }
 
     void CollectCash(int treeHP)

@@ -102,23 +102,8 @@ public class GameManager : MonoBehaviour
         if(currentLevel % levelMan.GetLevelLenght() == 0)
             currentLevel = 0;
 
-        //if (currentLevel > levelMan.GetLevelLenght())
-            
-
-
         PlayerPrefs.SetInt(Constants.CURRENT_LEVEL, currentLevel);
         PlayerPrefs.Save();
     }
 
-    public void DecreaseLevel()
-    {
-        currentLevel--;
-
-        if (currentLevel < 0)
-            currentLevel = 0;
-
-
-        PlayerPrefs.SetInt(Constants.CURRENT_LEVEL, currentLevel);
-        PlayerPrefs.Save();
-    }
 }
