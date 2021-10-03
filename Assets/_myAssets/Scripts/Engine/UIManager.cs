@@ -40,6 +40,9 @@ public class UIManager : MonoBehaviour
     //Coroutines
     IEnumerator _storedCoroutine;
 
+    //Tutorial
+    [SerializeField] GameObject _tutorial;
+
     private void OnEnable()
     {
         BusSystem.OnLevelDone += HandleLevelDone;
@@ -48,6 +51,7 @@ public class UIManager : MonoBehaviour
         BusSystem.OnAddCash += CollectCash;
         BusSystem.OnPerfectRound += ShowPerfectIcon;
         BusSystem.OnNewLevelLoad += HidePerfectIcon;
+        BusSystem.OnNewLevelStart += ShowTutorial;
     }
 
     private void OnDisable()
@@ -58,6 +62,7 @@ public class UIManager : MonoBehaviour
         BusSystem.OnAddCash -= CollectCash;
         BusSystem.OnPerfectRound -= ShowPerfectIcon;
         BusSystem.OnNewLevelLoad -= HidePerfectIcon;
+        BusSystem.OnNewLevelStart -= ShowTutorial;
     }
 
     private void Start()
@@ -71,18 +76,19 @@ public class UIManager : MonoBehaviour
         mainMenuPanel.SetActive(false);
     }
 
-    public void LevelEndContinue()
+    public void RetryLevel()
     {
         CloseEndScreen();
     }
 
+    /*
     public void ReplayLevel()
     {
         GameManager.Instance.DecreaseLevel();
         CloseEndScreen();
-    }
+    }*/
 
-    public void SkipLevel()
+    public void AdvanceLevel()
     {
         GameManager.Instance.AdvanceLevel();
         CloseEndScreen();    
@@ -185,5 +191,17 @@ public class UIManager : MonoBehaviour
     void HidePerfectIcon()
     {
         _perfectIcon.gameObject.SetActive(false);
+    }
+
+    void ShowTutorial()
+    {
+        _tutorial.SetActive(true);
+
+        Invoke("HideTutorial", 3);
+    }
+
+    void HideTutorial()
+    {
+        _tutorial.SetActive(false);
     }
 }

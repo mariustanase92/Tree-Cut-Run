@@ -282,6 +282,7 @@ MonoBehaviour:
   coinSpawnOrigin: {fileID: 1211409796133547515}
   coinsText: {fileID: 1211409796402465822}
   _coinsEarnedText: {fileID: 3603874105117450417}
+  _tutorial: {fileID: 1173672620}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -645,6 +646,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1173672620 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2507452404442864755, guid: e2a74f0f4b9a1074fa33beebce447b59,
+    type: 3}
+  m_PrefabInstance: {fileID: 3603874105117450416}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1174203907
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1609,7 +1616,7 @@ PrefabInstance:
     - target: {fileID: 2529031625848465032, guid: e2a74f0f4b9a1074fa33beebce447b59,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: LevelEndContinue
+      value: AdvanceLevel
       objectReference: {fileID: 0}
     - target: {fileID: 2805095676462146286, guid: e2a74f0f4b9a1074fa33beebce447b59,
         type: 3}
@@ -1684,7 +1691,7 @@ PrefabInstance:
     - target: {fileID: 4960056364533759551, guid: e2a74f0f4b9a1074fa33beebce447b59,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: LevelEndContinue
+      value: RetryLevel
       objectReference: {fileID: 0}
     - target: {fileID: 5425364484199642318, guid: e2a74f0f4b9a1074fa33beebce447b59,
         type: 3}
@@ -1719,7 +1726,7 @@ PrefabInstance:
     - target: {fileID: 6971695933725289065, guid: e2a74f0f4b9a1074fa33beebce447b59,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SkipLevel
+      value: AdvanceLevel
       objectReference: {fileID: 0}
     - target: {fileID: 7192976656454450424, guid: e2a74f0f4b9a1074fa33beebce447b59,
         type: 3}
@@ -1729,7 +1736,7 @@ PrefabInstance:
     - target: {fileID: 7192976656454450424, guid: e2a74f0f4b9a1074fa33beebce447b59,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ReplayLevel
+      value: RetryLevel
       objectReference: {fileID: 0}
     - target: {fileID: 8908698302377645247, guid: e2a74f0f4b9a1074fa33beebce447b59,
         type: 3}
