@@ -73,10 +73,26 @@ public class UIManager : MonoBehaviour
 
     public void LevelEndContinue()
     {
+        CloseEndScreen();
+    }
+
+    public void ReplayLevel()
+    {
+        GameManager.Instance.DecreaseLevel();
+        CloseEndScreen();
+    }
+
+    public void SkipLevel()
+    {
+        GameManager.Instance.AdvanceLevel();
+        CloseEndScreen();    
+    }
+
+    void CloseEndScreen()
+    {
         endScreenWin.SetActive(false);
         endScreenLose.SetActive(false);
         mainMenuPanel.SetActive(true);
-
         BusSystem.CallNewLevelLoad();
         levelText.text = string.Format("Level {0}", GameManager.Instance.currentLevel + 1);
     }
@@ -97,10 +113,12 @@ public class UIManager : MonoBehaviour
             _cutTreesText.enabled = false;
             endScreenWin.SetActive(true);
             StartCoroutine(DelayContinueButton());
+            //Show Replay Button
         }
         else
         {
             endScreenLose.SetActive(true);
+            //Show Skip Button
         }
     }
 

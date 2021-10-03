@@ -49,6 +49,7 @@ public class CharacterMovement : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
         currentSpeed = dataSO.moveSpeed;
         _axeHP = transform.Find("AxeHP");
+        DisableAxeHP();
         _capsule = GetComponent<CapsuleCollider>();
         Physics.gravity = new Vector3(0, -35.0F, 0);
     }
@@ -250,7 +251,8 @@ public class CharacterMovement : MonoBehaviour
         _axeTimer = _maxAxeTimer;
         _glowFXs.SetActive(false);
 
-        CreateAxe(); 
+        CreateAxe();
+
     }
 
     private void HandleNewLevelLoad()
@@ -354,9 +356,6 @@ public class CharacterMovement : MonoBehaviour
             {
                 _chainsawTime = _newAxe.GetComponent<Axe>().GetCurrentHP();
             }
-
-            if (_chainsawTime <= 1)
-                _chainsawTime = 2;
         }
 
         if (_newAxe != null)

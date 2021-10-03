@@ -48,7 +48,7 @@ public class LevelManager : MonoBehaviour
         return levelList.Count;
     }
 
-    public GameObject GetCurrentPlayzone()
+    public GameObject GetCurrentPlayZone()
     {
         return _newLevel;
     }

@@ -8,8 +8,9 @@ public class Deadzone : MonoBehaviour
     {
         if (other.CompareTag(Const.TAG_PLAYER))
             BusSystem.CallLevelDone(false);
-        else
+        else if (other.CompareTag(Const.TAG_TREEBODY))
         {
+            Debug.Log(other.gameObject);
             Destroy(other.gameObject);
         }
     }

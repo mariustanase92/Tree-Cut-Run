@@ -375,6 +375,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8084697388327422275}
     m_Modifications:
+    - target: {fileID: 4159277397146356116, guid: 49a7e9da1576dc84281ae09442a4054d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5591585291779134900, guid: 49a7e9da1576dc84281ae09442a4054d,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -399,6 +404,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TrailParticleFX
+      objectReference: {fileID: 0}
+    - target: {fileID: 6518068147222002685, guid: 49a7e9da1576dc84281ae09442a4054d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7263393581723315851, guid: 49a7e9da1576dc84281ae09442a4054d,
         type: 3}
@@ -565,6 +575,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Sawblade
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ad09501e1cee5b249b008272ee4bbb47,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ad09501e1cee5b249b008272ee4bbb47,
         type: 3}

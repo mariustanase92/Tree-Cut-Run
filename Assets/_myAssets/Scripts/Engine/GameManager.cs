@@ -70,14 +70,7 @@ public class GameManager : MonoBehaviour
 
         if (isWin)
         {
-            currentLevel++;
-
-            if (currentLevel > levelMan.GetLevelLenght())
-                currentLevel = 0;
-
-
-             PlayerPrefs.SetInt(Constants.CURRENT_LEVEL, currentLevel);
-             PlayerPrefs.Save();
+            AdvanceLevel();
         }
         else
         {
@@ -97,13 +90,35 @@ public class GameManager : MonoBehaviour
         BusSystem.CallUpdateCoins(cash);
     }
 
-    void ResetLogCount()
-    {
-        AddCash(-100);
-    }
-
     public GameObject GetCurrentPlayzone()
     {
-       return levelMan.GetCurrentPlayzone();
+       return levelMan.GetCurrentPlayZone();
+    }
+
+    public void AdvanceLevel()
+    {
+        currentLevel++;
+
+        if(currentLevel % levelMan.GetLevelLenght() == 0)
+            currentLevel = 0;
+
+        //if (currentLevel > levelMan.GetLevelLenght())
+            
+
+
+        PlayerPrefs.SetInt(Constants.CURRENT_LEVEL, currentLevel);
+        PlayerPrefs.Save();
+    }
+
+    public void DecreaseLevel()
+    {
+        currentLevel--;
+
+        if (currentLevel < 0)
+            currentLevel = 0;
+
+
+        PlayerPrefs.SetInt(Constants.CURRENT_LEVEL, currentLevel);
+        PlayerPrefs.Save();
     }
 }

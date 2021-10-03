@@ -29,7 +29,8 @@ public class Axe : MonoBehaviour
         _hitTree = false;
         _hitCooldown = _maxCooldown;
 
-        BusSystem.OnNewLevelStart += Init;
+        Init();
+        //BusSystem.OnNewLevelStart += Init;
         //BusSystem.OnLevelDone += SetCanCut;
         // BusSystem.OnCanCut += SetCanCut;
         // SetCanCut(false);
@@ -39,7 +40,7 @@ public class Axe : MonoBehaviour
 
     private void OnDisable()
     {
-        BusSystem.OnNewLevelStart -= Init;
+       // BusSystem.OnNewLevelStart -= Init;
        // BusSystem.OnLevelDone -= SetCanCut;
        // BusSystem.OnCanCut -= SetCanCut;
     }

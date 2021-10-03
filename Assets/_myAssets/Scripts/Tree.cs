@@ -136,6 +136,7 @@ public class Tree : MonoBehaviour
                 newLog.GetComponent<Rigidbody>().isKinematic = true;
                 newLog.transform.localPosition += new Vector3(0, 2 * i, 0);
                 newLog.transform.parent = this.transform;
+                newLog.tag = Const.TAG_TREEBODY;
                 _logMiddleList.Add(newLog);
             }
         }
