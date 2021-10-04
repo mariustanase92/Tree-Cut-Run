@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: PlayerSO
   m_EditorClassIdentifier: 
   moveSpeed: 23
-  steerSpeed: 1
+  steerSpeed: 1.5
   startHP: 2
