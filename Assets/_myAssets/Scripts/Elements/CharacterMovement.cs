@@ -51,7 +51,7 @@ public class CharacterMovement : MonoBehaviour
         _axeHP = transform.Find("AxeHP");
         DisableAxeHP();
         _capsule = GetComponent<CapsuleCollider>();
-        Physics.gravity = new Vector3(0, -35.0F, 0);
+        
     }
 
     private void OnEnable()
@@ -447,6 +447,11 @@ public class CharacterMovement : MonoBehaviour
     {
         if(_axeHP.GetComponent<TextMesh>() != null)
             _axeHP.GetComponent<TextMesh>().text = Mathf.RoundToInt(_chainsawTime).ToString();
+    }
+
+    public float GetCurrentHP()
+    {
+        return _chainsawTime;
     }
 
 }

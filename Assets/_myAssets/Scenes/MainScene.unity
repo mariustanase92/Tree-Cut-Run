@@ -545,8 +545,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a7ad6bc9951ebb468d70ecf1d0d262b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentLevel: 0
   canVibrate: 0
-  currentLevel: 1
+  houseMultiplierBonus: 30
   levelMan: {fileID: 1031915005}
 --- !u!114 &970850703
 MonoBehaviour:

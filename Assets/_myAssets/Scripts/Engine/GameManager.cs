@@ -22,11 +22,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    [HideInInspector]
-    public bool canVibrate;
+
     public int currentLevel;
+    public bool canVibrate;
+    public int houseMultiplierBonus = 30; 
     public LevelManager levelMan;
-    int cash = 0;
+    int _cash = 0;
 
     private void OnEnable()
     {
@@ -39,7 +40,7 @@ public class GameManager : MonoBehaviour
            // cash = PlayerPrefs.GetInt(Constants.CURRENT_CASH);
         }
 
-        BusSystem.CallUpdateCoins(cash);
+        BusSystem.CallUpdateCoins(_cash);
         BusSystem.OnNewLevelStart += StartGame;
         BusSystem.OnLevelDone += HandleLevelDone;
         BusSystem.OnAddCash += AddCash;
@@ -57,6 +58,8 @@ public class GameManager : MonoBehaviour
         GameAnalyticsSDK.GameAnalytics.Initialize();
 
         BusSystem.CallNewLevelLoad();
+
+        Physics.gravity = new Vector3(0, -35.0F, 0);
     }
 
     internal void StartGame()
@@ -80,14 +83,14 @@ public class GameManager : MonoBehaviour
 
     public void AddCash(int value)
     {
-        cash += value;
+        _cash += value;
 
-        if (cash <= 0)
-            cash = 0;
+        if (_cash <= 0)
+            _cash = 0;
 
-        PlayerPrefs.SetInt(Constants.CURRENT_CASH, cash);
+        PlayerPrefs.SetInt(Constants.CURRENT_CASH, _cash);
         PlayerPrefs.Save();
-        BusSystem.CallUpdateCoins(cash);
+        BusSystem.CallUpdateCoins(_cash);
     }
 
     public GameObject GetCurrentPlayzone()

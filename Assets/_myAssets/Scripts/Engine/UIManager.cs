@@ -55,7 +55,7 @@ public class UIManager : MonoBehaviour
     }
 
     private void OnDisable()
-    {  
+    {
         BusSystem.OnLevelDone -= HandleLevelDone;
         BusSystem.OnUpdateCoins -= HandleUpdateCoins;
         BusSystem.OnPhaseOneEnd -= EnableCutTreesUI;
@@ -84,7 +84,7 @@ public class UIManager : MonoBehaviour
     public void AdvanceLevel()
     {
         GameManager.Instance.AdvanceLevel();
-        CloseEndScreen();    
+        CloseEndScreen();
     }
 
     void CloseEndScreen()
@@ -147,10 +147,10 @@ public class UIManager : MonoBehaviour
     void CollectCash(int treeHP)
     {
         BusSystem.CallSoundPlay(SoundEffects.PickIngot);
-        
+
         for (int i = 0; i < 10; i++)
         {
-            SpawnCoin(coinSpawnOrigin.transform.position);    
+            SpawnCoin(coinSpawnOrigin.transform.position);
         }
 
         ShowCoinsEarnedText(treeHP);
@@ -168,9 +168,18 @@ public class UIManager : MonoBehaviour
         _coinsEarnedText.text = $"+{amount}";
 
         if (amount >= 100)
+        {
             _coinsEarnedText.color = Color.green;
+            _coinsEarnedText.enableAutoSizing = false;
+            _coinsEarnedText.fontSize = 80;
+        }
         else
+        {
             _coinsEarnedText.color = Color.white;
+            _coinsEarnedText.enableAutoSizing = true;
+            _coinsEarnedText.fontSize = 50;
+        }
+           
 
         StartCoroutine(_storedCoroutine);
     }

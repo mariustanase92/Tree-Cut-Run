@@ -42,9 +42,18 @@ public class Build : MonoBehaviour
                 if(!_levelDone)
                 {
                     _levelDone = true;
+                    _player = GameObject.Find("Player").transform;
+                    
                     BusSystem.CallLevelDone(true);
                     BusSystem.CallPerfectRound();
-                    BusSystem.CallAddCash(100);
+                    
+                    if(_player != null)
+                    {
+                        BusSystem.CallAddCash(50 +
+                        GameManager.Instance.houseMultiplierBonus *
+                        (int)_player.GetComponent<CharacterMovement>().GetCurrentHP());
+                    }
+                    
                     ShowPieces(true);
                 }       
             }
@@ -60,7 +69,6 @@ public class Build : MonoBehaviour
     {
         if(isWin)
         {
-            _player = GameObject.Find("Player").transform;
             _woodPrefab = Resources.Load<GameObject>("WoodPiece");
             _startBuilding = true;
 
