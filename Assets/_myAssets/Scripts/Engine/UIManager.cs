@@ -8,40 +8,29 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject startButton;
-    [SerializeField]
-    private GameObject settingsButton;
-    [SerializeField]
-    private GameObject mainMenuPanel;
-    [SerializeField]
-    private GameObject endScreenWin;
-    [SerializeField]
-    private GameObject endScreenLose;
-    [SerializeField]
-    private GameObject continueButton;
-    [SerializeField]
-    private TextMeshProUGUI levelText;
-    [SerializeField] private Image _cutTreesText;
-    [SerializeField] private Image _perfectIcon;
+    //Main Screen
+    [SerializeField] GameObject startButton;
+    [SerializeField] GameObject settingsButton;
+    [SerializeField] GameObject mainMenuPanel;
+    [SerializeField] GameObject endScreenWin;
+    [SerializeField] GameObject endScreenLose;
+    [SerializeField] GameObject _winButtons;
+    
+    //Level
+    [SerializeField] TextMeshProUGUI levelText;
+    [SerializeField] Image _cutTreesText;
+    [SerializeField] Image _perfectIcon;
 
     //Coins
-    [SerializeField]
-    private GameObject coinToSpawn;
-    [SerializeField]
-    private Transform coinContainer;
-    [SerializeField]
-    private Transform coinSpawnOrigin;
-    [SerializeField]
-    private TextMeshProUGUI coinsText;
-    [SerializeField]
-    private TextMeshProUGUI _coinsEarnedText;
+    [SerializeField] GameObject coinToSpawn;
+    [SerializeField] Transform coinContainer;
+    [SerializeField] Transform coinSpawnOrigin;
+    [SerializeField] TextMeshProUGUI coinsText;
+    [SerializeField] TextMeshProUGUI _coinsEarnedText;
 
-    //Coroutines
-    IEnumerator _storedCoroutine;
-
-    //Tutorial
+    //Other
     [SerializeField] GameObject _tutorial;
+    IEnumerator _storedCoroutine;
 
     private void OnEnable()
     {
@@ -112,12 +101,10 @@ public class UIManager : MonoBehaviour
             _cutTreesText.enabled = false;
             endScreenWin.SetActive(true);
             StartCoroutine(DelayContinueButton());
-            //Show Replay Button
         }
         else
         {
             endScreenLose.SetActive(true);
-            //Show Skip Button
         }
     }
 
@@ -128,9 +115,9 @@ public class UIManager : MonoBehaviour
 
     IEnumerator DelayContinueButton()
     {
-        continueButton.SetActive(false);
+        _winButtons.SetActive(false);
         yield return new WaitForSeconds(5f);
-        continueButton.SetActive(true);
+        _winButtons.SetActive(true);
     }
 
     void EnableCutTreesUI()

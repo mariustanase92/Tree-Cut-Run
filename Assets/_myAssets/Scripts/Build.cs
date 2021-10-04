@@ -50,7 +50,7 @@ public class Build : MonoBehaviour
                     if(_player != null)
                     {
                         BusSystem.CallAddCash(50 +
-                        GameManager.Instance.houseMultiplierBonus *
+                        GameManager.Instance.phase2Multiplier *
                         (int)_player.GetComponent<CharacterMovement>().GetCurrentHP());
                     }
                     
@@ -91,7 +91,7 @@ public class Build : MonoBehaviour
                     FunctionTimer.Create(() => piece.gameObject.SetActive(true), time);
                     FunctionTimer.Create(() => _shineFX.transform.position = piece.position, time);
                     FunctionTimer.Create(() => _particle.Play(), time);
-                    FunctionTimer.Create(() => BusSystem.CallSoundPlay(SoundEffects.PickIngot), time);
+                    FunctionTimer.Create(() => BusSystem.CallSoundPlay(SoundEffects.Checkpoint), time);
                     FunctionTimer.Create(() => GameManager.Instance.AddCash(-1), time);
                     time += _buildSpeed;
                 } 

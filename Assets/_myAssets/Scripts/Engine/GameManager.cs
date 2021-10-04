@@ -23,24 +23,33 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public int currentLevel;
+    [Header ("Level Variables")]
+    [Tooltip("Make sure to DISABLE prefs")]
+    [Range(0, 9)] public int currentLevel;
+
+    [Range(10, 100)] public int phase1Reward = 50;
+
+    [Tooltip("This is multiplied with HP left at the end of Phase 2")]
+    [Range(10, 100)] public int phase2Multiplier = 30;
+    [Range(0, 999)] public int cash = 0;
+
+    [Header("Other")]
+    [Tooltip("Toggle Device RUMBLE")]
     public bool canVibrate;
-    public int houseMultiplierBonus = 30; 
     public LevelManager levelMan;
-    int _cash = 0;
 
     private void OnEnable()
     {
         if (PlayerPrefs.HasKey(Constants.CURRENT_LEVEL))
         {
-           // currentLevel = PlayerPrefs.GetInt(Constants.CURRENT_LEVEL);
+           currentLevel = PlayerPrefs.GetInt(Constants.CURRENT_LEVEL);
         }
         if (PlayerPrefs.HasKey(Constants.CURRENT_CASH))
         {
-           // cash = PlayerPrefs.GetInt(Constants.CURRENT_CASH);
+           cash = PlayerPrefs.GetInt(Constants.CURRENT_CASH);
         }
 
-        BusSystem.CallUpdateCoins(_cash);
+        BusSystem.CallUpdateCoins(cash);
         BusSystem.OnNewLevelStart += StartGame;
         BusSystem.OnLevelDone += HandleLevelDone;
         BusSystem.OnAddCash += AddCash;
@@ -64,33 +73,25 @@ public class GameManager : MonoBehaviour
 
     internal void StartGame()
     {
-        GameAnalyticsSDK.GameAnalytics.NewProgressionEvent(GameAnalyticsSDK.GAProgressionStatus.Start, string.Format("{0}", currentLevel % levelMan.GetLevelLenght()));
+        GameAnalyticsSDK.GameAnalytics.NewProgressionEvent(GameAnalyticsSDK.GAProgressionStatus.Start, 
+            string.Format("{0}", currentLevel % levelMan.GetLevelLenght()));
     }
 
     private void HandleLevelDone(bool isWin)
     {
-        GameAnalyticsSDK.GameAnalytics.NewProgressionEvent(isWin ? GameAnalyticsSDK.GAProgressionStatus.Complete : GameAnalyticsSDK.GAProgressionStatus.Fail, string.Format("{0}", currentLevel % levelMan.GetLevelLenght()));
-
-        if (isWin)
-        {
-            
-        }
-        else
-        {
-
-        }
+        GameAnalyticsSDK.GameAnalytics.NewProgressionEvent(isWin ? 
+            GameAnalyticsSDK.GAProgressionStatus.Complete : GameAnalyticsSDK.GAProgressionStatus.Fail, 
+            string.Format("{0}", currentLevel % levelMan.GetLevelLenght()));
     }
 
     public void AddCash(int value)
     {
-        _cash += value;
+        cash += value;
+        cash = Mathf.Clamp(cash, 0, cash);
 
-        if (_cash <= 0)
-            _cash = 0;
-
-        PlayerPrefs.SetInt(Constants.CURRENT_CASH, _cash);
+        PlayerPrefs.SetInt(Constants.CURRENT_CASH, cash);
         PlayerPrefs.Save();
-        BusSystem.CallUpdateCoins(_cash);
+        BusSystem.CallUpdateCoins(cash);
     }
 
     public GameObject GetCurrentPlayzone()
@@ -108,5 +109,4 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.SetInt(Constants.CURRENT_LEVEL, currentLevel);
         PlayerPrefs.Save();
     }
-
 }

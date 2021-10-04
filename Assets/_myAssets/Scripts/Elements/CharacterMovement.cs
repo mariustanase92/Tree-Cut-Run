@@ -182,6 +182,7 @@ public class CharacterMovement : MonoBehaviour
             FunctionTimer.Create(() => BusSystem.CallSoundPlay(SoundEffects.Checkpoint), .3f);
             EnableTurboMode();
             BusSystem.CallPhaseOneEnd();
+            BusSystem.CallAddCash(GameManager.Instance.phase1Reward);
         }
         else if (other.CompareTag(Const.TAG_OBSTACLE))
         {
@@ -355,6 +356,9 @@ public class CharacterMovement : MonoBehaviour
             if (_newAxe != null)
             {
                 _chainsawTime = _newAxe.GetComponent<Axe>().GetCurrentHP();
+
+                if (_chainsawTime <= 0)
+                    _chainsawTime = 1;
             }
         }
 
