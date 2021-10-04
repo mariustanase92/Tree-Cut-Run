@@ -22,31 +22,29 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //Vars
+    [HideInInspector] public int currentLevel;
+    [HideInInspector] public int phase1Reward = 50;
+    [HideInInspector] public int phase2Multiplier = 30;
+    [HideInInspector] public int cash = 0;
+    [HideInInspector] public Vector3 worldGravity = new Vector3(0, -35.0F, 0);
+    [HideInInspector] public bool canVibrate;
 
-    [Header ("Level Variables")]
-    [Tooltip("Make sure to DISABLE prefs")]
-    [Range(0, 9)] public int currentLevel;
-
-    [Range(10, 100)] public int phase1Reward = 50;
-
-    [Tooltip("This is multiplied with HP left at the end of Phase 2")]
-    [Range(10, 100)] public int phase2Multiplier = 30;
-    [Range(0, 999)] public int cash = 0;
-
-    [Header("Other")]
-    [Tooltip("Toggle Device RUMBLE")]
-    public bool canVibrate;
+    //Refs
+    public WorldSO worldDataSO;
     public LevelManager levelMan;
 
     private void OnEnable()
     {
+        GetWorldSOData();
+
         if (PlayerPrefs.HasKey(Constants.CURRENT_LEVEL))
         {
            currentLevel = PlayerPrefs.GetInt(Constants.CURRENT_LEVEL);
         }
         if (PlayerPrefs.HasKey(Constants.CURRENT_CASH))
         {
-           cash = PlayerPrefs.GetInt(Constants.CURRENT_CASH);
+           // cash = PlayerPrefs.GetInt(Constants.CURRENT_CASH);
         }
 
         BusSystem.CallUpdateCoins(cash);
@@ -68,7 +66,7 @@ public class GameManager : MonoBehaviour
 
         BusSystem.CallNewLevelLoad();
 
-        Physics.gravity = new Vector3(0, -35.0F, 0);
+        Physics.gravity = worldGravity;
     }
 
     internal void StartGame()
@@ -108,5 +106,15 @@ public class GameManager : MonoBehaviour
 
         PlayerPrefs.SetInt(Constants.CURRENT_LEVEL, currentLevel);
         PlayerPrefs.Save();
+    }
+
+    void GetWorldSOData()
+    {
+        currentLevel = worldDataSO.currentLevel;
+        phase1Reward = worldDataSO.phase1Reward;
+        phase2Multiplier = worldDataSO.phase2Multiplier;
+        cash = worldDataSO.cash;
+        worldGravity = worldDataSO.worldGravity;
+        canVibrate = worldDataSO.canVibrate;
     }
 }

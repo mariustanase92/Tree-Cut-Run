@@ -545,9 +545,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentLevel: 0
-  endMultiplierBonus: 30
+  phase1Reward: 50
+  phase2Multiplier: 30
   cash: 0
+  worldGravity: {x: 0, y: -35, z: 0}
   canVibrate: 0
+  worldDataSO: {fileID: 11400000, guid: 49681e5ceaddd7645a65cdb7a995019c, type: 2}
   levelMan: {fileID: 1031915005}
 --- !u!114 &970850703
 MonoBehaviour:

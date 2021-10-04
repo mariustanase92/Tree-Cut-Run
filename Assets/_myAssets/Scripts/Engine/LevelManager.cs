@@ -18,7 +18,6 @@ public class LevelManager : MonoBehaviour
         BusSystem.OnNewLevelLoad += HandleNewLevelLoad;
     }
 
-
     private void OnDisable()
     {
         BusSystem.OnNewLevelLoad -= HandleNewLevelLoad;
