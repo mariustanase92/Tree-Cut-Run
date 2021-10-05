@@ -4,22 +4,19 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
-    [SerializeField]
-    private List<GameObject> levelList;
-    [SerializeField]
-    private Transform playzone;
+    [Header ("Levels")]
+    [SerializeField] List<GameObject> levelList;
+    [SerializeField] Transform playzone;
+    GameObject _newLevel;
 
-    private GameObject _newLevel;
-
-    [SerializeField]
-    private List<GameObject> characters;
-    private int currentCharIndex = 0;
+    [Header("Characters")]
+    [SerializeField] List<GameObject> characters;
+    int currentCharIndex = 0;
 
     private void OnEnable()
     {
         BusSystem.OnNewLevelLoad += HandleNewLevelLoad;
     }
-
 
     private void OnDisable()
     {
@@ -46,5 +43,10 @@ public class LevelManager : MonoBehaviour
     public int GetLevelLenght()
     {
         return levelList.Count;
+    }
+
+    public GameObject GetCurrentPlayZone()
+    {
+        return _newLevel;
     }
 }

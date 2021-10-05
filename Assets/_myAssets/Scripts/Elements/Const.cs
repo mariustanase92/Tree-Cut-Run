@@ -4,6 +4,18 @@ using UnityEngine;
 
 public static class Const
 {
+    //Tags
+    public const string TAG_PLAYER = "Player";
+    public const string TAG_TREE = "Tree";
+    public const string TAG_TREEBACK = "Back";
+    public const string TAG_TREEFRONT = "Front";
+    public const string TAG_CHAINSAW = "Chainsaw";
+    public const string TAG_FUEL = "Fuel";
+    public const string TAG_INGOT = "Ingot";
+    public const string TAG_AXE = "Axe";
+    public const string TAG_CHECKPOINT = "PhaseOne";
+    public const string TAG_OBSTACLE = "Obstacle";
+    public const string TAG_TREEBODY = "Body";
     public static string COLLECTIBLE_TAG = "Collectible";
     public static string END_TAG = "EndGame";
 
@@ -15,16 +27,4 @@ public static class Const
     public static string WIN_ANIM = "Win";
     public static string LOSE_ANIM = "Lose";
     public static string TREESHAKE_ANIM = "TreeShake";
-
-    //Tags
-    public const string TAG_PLAYER = "Player";
-    public const string TAG_TREE = "Tree";
-    public const string TAG_TREEBACK = "Back";
-    public const string TAG_TREEFRONT = "Front";
-    public const string TAG_CHAINSAW = "Chainsaw";
-    public const string TAG_FUEL = "Fuel";
-    public const string TAG_INGOT = "Ingot";
-    public const string TAG_AXE = "Axe";
-    public const string TAG_CHECKPOINT = "PhaseOne";
-
 }

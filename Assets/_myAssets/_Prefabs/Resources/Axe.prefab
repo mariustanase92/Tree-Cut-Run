@@ -9503,7 +9503,7 @@ MonoBehaviour:
   _sizeChange: 0.9
   _bladeOffset: 0.6
   _maxCooldown: 0.6
-  _maxHP: 5
+  _maxHP: 2
   _hitBox: {fileID: 9168680956798082474}
   _bladePos: {fileID: 6837955904068656060}
   _blade: {fileID: 4147945320818853981}

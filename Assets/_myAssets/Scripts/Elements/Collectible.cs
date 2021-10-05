@@ -18,6 +18,7 @@ public class Collectible : MonoBehaviour
     private void Awake()
     {
         data = new CollectibleData(type);
+
         if (isMoving)
             transform.DOLocalMoveX(moveTo, 6f).SetEase(Ease.Linear).SetLoops(-1, LoopType.Yoyo);
     }

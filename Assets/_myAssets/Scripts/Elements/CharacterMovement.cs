@@ -4,12 +4,9 @@ using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour
 {
-    [SerializeField]
-    private CharacterDataSO dataSO;
-    [SerializeField]
-    private Camera dummmyCam;
-    CapsuleCollider _capsule;
-
+    //Scriptable Objects
+    [SerializeField] CharacterDataSO dataSO;
+    
     //Weapons
     [SerializeField] Transform _weaponMuzzle;
     [SerializeField] Transform _hitBoxArea;
@@ -19,98 +16,108 @@ public class CharacterMovement : MonoBehaviour
     GameObject _chainsawPrefab;
     GameObject _newChainsaw;
    
-    private bool isPlaying = false;
+    //PlayMode ON/OFF
+    bool _isPlaying = false;
     bool _canMove = true;
 
-    private Transform thisT;
-    private float currentSpeed;
-    private float startPos;
-    private float direction;
-    private Animator anim;
-    private Vector3 camStartPos;
+    //Transform
+    Transform thisT;
+    float currentSpeed;
+    float startPos;
+    float direction;
 
-    [SerializeField] float _maxChainsawTime = 1f;
+    //Camera
+    [SerializeField] Camera dummmyCam;
+    Vector3 camStartPos;
+
+    //Animator
+    Animator anim;
+    
+    //Chainsaw
+    float _maxChainsawTime = 1f;
     float _chainsawTime = 3f;
     bool _isUsingChainsaw = false;
-    bool _isInTurboMode = false;
+    bool _isInPhase2 = false;
 
     //Axe
-    bool _isCutting = false;
+    bool _isUsingAxe = false;
     float _maxAxeTimer = .4f;
     float _axeTimer;
 
     //UI
     Transform _axeHP;
-    
 
     private void Awake()
     {
         thisT = GetComponent<Transform>();
         anim = GetComponentInChildren<Animator>();
+        
         currentSpeed = dataSO.moveSpeed;
         _axeHP = transform.Find("AxeHP");
-        _capsule = GetComponent<CapsuleCollider>();
+        
+        DisableAxeHP();
+   
     }
 
     private void OnEnable()
     {
         BusSystem.OnNewLevelStart += Init;
         BusSystem.OnNewLevelLoad += HandleNewLevelLoad;
-        BusSystem.OnNewLevelLoad += DisableAxeHP;
         BusSystem.OnLevelDone += HandleLevelDone;
-        BusSystem.OnPhaseOneEnd += EnableTurboMode;
     }
 
     private void OnDisable()
     {
         BusSystem.OnNewLevelStart -= Init;
         BusSystem.OnNewLevelLoad -= HandleNewLevelLoad;
-        BusSystem.OnNewLevelLoad -= DisableAxeHP;
         BusSystem.OnLevelDone -= HandleLevelDone;
-        BusSystem.OnPhaseOneEnd -= EnableTurboMode;
     }
 
     void Update()
     {
-        if (!isPlaying) return;
+        if (!_isPlaying) return;
 
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Space))
             _canMove = !_canMove;
 #endif
         if(_canMove)
+        {
             thisT.Translate(Vector3.forward * currentSpeed * Time.deltaTime, Space.World);
-
+        }
+            
         if (Input.GetMouseButtonDown(0))
         {
-            HandleTouchBegan(dummmyCam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, dummmyCam.transform.position.z)) * -1);
+            HandleTouchBegan(dummmyCam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, 
+                Input.mousePosition.y, dummmyCam.transform.position.z)) * -1);
         }
         if (Input.GetMouseButton(0))
         {
-            HandleTouchMoved(dummmyCam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, dummmyCam.transform.position.z)) * -1);
+            HandleTouchMoved(dummmyCam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, 
+                Input.mousePosition.y, dummmyCam.transform.position.z)) * -1);
         }
         if (Input.GetMouseButtonUp(0))
         {
             HandleTouchEnded();
         }
 
-        if(_isInTurboMode)
+        if(_isInPhase2)
         {
 
         }
         else if(_isUsingChainsaw)
         {
-            _chainsawTime -= Time.deltaTime;
+            _chainsawTime -= Time.deltaTime * .9f;
+            
+            UpdateHPText();
 
             if(_chainsawTime <= 0)
-                DestroyChainsaw();
+            {
+                BusSystem.CallLevelDone(true);
+            }        
         }
 
-        Vector3 clampedPosition = thisT.localPosition;
-        clampedPosition.x = Mathf.Clamp(clampedPosition.x, -dataSO.laneLimit, dataSO.laneLimit);
-        thisT.localPosition = clampedPosition;
-
-        if(_isCutting)
+        if(_isUsingAxe)
         {
             if(_newAxe != null)
             {
@@ -129,7 +136,7 @@ public class CharacterMovement : MonoBehaviour
     {
         if (other.CompareTag(Const.END_TAG))
         {
-            if (!isPlaying) return;
+            if (!_isPlaying) return;
 
             bool isWin = true;
             BusSystem.CallLevelDone(isWin);
@@ -144,6 +151,7 @@ public class CharacterMovement : MonoBehaviour
         else if (other.CompareTag(Const.TAG_FUEL))
         {
             _chainsawTime = _maxChainsawTime;
+            
             SetIsUsingChainsaw(true);
             CreateChainsaw();
 
@@ -171,25 +179,29 @@ public class CharacterMovement : MonoBehaviour
         else if (other.CompareTag(Const.TAG_CHECKPOINT))
         {
             FunctionTimer.Create(() => BusSystem.CallSoundPlay(SoundEffects.Checkpoint), .3f);
-            EnableTurboMode();
+            EnablePhase2();
             BusSystem.CallPhaseOneEnd();
+            BusSystem.CallAddCash(GameManager.Instance.phase1Reward);
         }
-       // else if (_isUsingChainsaw || _isInTurboMode)
-           // BusSystem.CallSoundPlay(SoundEffects.Chainsaw);
+        else if (other.CompareTag(Const.TAG_OBSTACLE))
+        {
+            if(_isPlaying)
+                BusSystem.CallLevelDone(false);
+        }
     }
 
     private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag(Const.TAG_TREEFRONT))
         {
-            if (!_isUsingChainsaw && !_isInTurboMode)
+            if (!_isUsingChainsaw && !_isInPhase2)
             {
                 if (other.GetComponent<Tree>().IsTreeChopped())
                 {
                     _canMove = true;
-                    _isCutting = false;
+                    _isUsingAxe = false;
 
-                    if(isPlaying)
+                    if(_isPlaying)
                         anim.Play(Const.WALK_ANIM);
 
                     if (_newAxe != null)
@@ -199,9 +211,9 @@ public class CharacterMovement : MonoBehaviour
                 {
                     _canMove = false;
 
-                    if (isPlaying)
+                    if (_isPlaying)
                     {
-                        _isCutting = true;
+                        _isUsingAxe = true;
                         anim.Play(Const.CHOP_ANIM);
                     }
                 }
@@ -209,44 +221,47 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
-
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag(Const.TAG_TREEFRONT))
         {
             _canMove = true;
-            _isCutting = false;
+            _isUsingAxe = false;
              
             if(_newAxe != null)
                 _newAxe.GetComponent<Axe>().SetCanCut(false);
 
-            if (!_isUsingChainsaw && !_isInTurboMode && isPlaying)
+            if (!_isUsingChainsaw && !_isInPhase2 && _isPlaying)
                 anim.Play(Const.WALK_ANIM);
         }
     }
 
     private void Init()
     {
-        isPlaying = true;
-        _isCutting = false;
-         _canMove = true;
+        _isPlaying = true;
+        _isUsingAxe = false;
+        _canMove = true;
 
         GetComponent<Rigidbody>().isKinematic = false;
         anim.Play(Const.WALK_ANIM);
+        
         camStartPos = Camera.main.transform.position;
         Camera.main.transform.SetParent(transform);
+        
         _chainsawTime = _maxChainsawTime;
         _axeTimer = _maxAxeTimer;
+        
         _glowFXs.SetActive(false);
 
-        CreateAxe(); 
+        CreateAxe();
+
     }
 
     private void HandleNewLevelLoad()
     {
-        transform.localEulerAngles = Vector3.zero;
-        isPlaying = false;
+        _isPlaying = false;
 
+        transform.localEulerAngles = Vector3.zero;
         thisT.localPosition = new Vector3(0, 0, 0);
         thisT.GetChild(0).localEulerAngles = Vector3.zero;
 
@@ -254,26 +269,30 @@ public class CharacterMovement : MonoBehaviour
 
         anim.Play(Const.IDLE_ANIM);
         Camera.main.transform.position = camStartPos;
+
+        DisableAxeHP();
     }
 
     private void HandleLevelDone(bool isWin)
     {
+        _isPlaying = false;
+
         Camera.main.transform.parent = null;
         thisT.GetChild(0).localEulerAngles = Vector3.zero;
-        isPlaying = false;
-
         GetComponent<Rigidbody>().isKinematic = true;
-        DisableTurboMode();
-       
-        if(isWin)
+        
+        DisablePhase2();
+        DisableAxeHP();
+        DestroyChainsaw();
+
+        if (isWin)
         {
             Vibration.VibratePeek();
             BusSystem.CallSoundPlay(SoundEffects.Win);
-
             anim.Play(Const.WIN_ANIM);
-            transform.localEulerAngles += new Vector3(transform.localEulerAngles.x, 180, transform.localEulerAngles.z);
-        }
             
+            transform.localEulerAngles += new Vector3(transform.localEulerAngles.x, 180, transform.localEulerAngles.z);
+        } 
         else
         {
             Vibration.VibrateNope();
@@ -311,77 +330,107 @@ public class CharacterMovement : MonoBehaviour
     void CreateAxe()
     {
         if (_newAxe != null)
+        {
             Destroy(_newAxe);
+        }        
 
-        EnableAxeHP();
         _axePrefab = Resources.Load<GameObject>("Axe");
-        GameObject _copyAxe = Instantiate(_axePrefab, _weaponMuzzle.transform.position, _weaponMuzzle.transform.rotation);
-        _newAxe = _copyAxe;
-        _newAxe.transform.parent = _weaponMuzzle;
-        _newAxe.transform.localPosition = new Vector3(-0.08f, 0, 0);
-        _newAxe.transform.localEulerAngles = new Vector3(60, -180, 0);
-        _newAxe.GetComponent<Axe>().SetTextMesh(_axeHP.GetComponent<TextMesh>());
-        _newAxe.GetComponent<Axe>().SetHitBoxArea(_hitBoxArea);
+
+        if(_axePrefab != null)
+        {
+            GameObject _copyAxe = Instantiate(_axePrefab, _weaponMuzzle.transform.position, _weaponMuzzle.transform.rotation);
+            _newAxe = _copyAxe;
+            _newAxe.transform.parent = _weaponMuzzle;
+            _newAxe.transform.localPosition = new Vector3(-0.08f, 0, 0);
+            _newAxe.transform.localEulerAngles = new Vector3(60, -180, 0);
+
+            Axe _axeScript = _newAxe.GetComponent<Axe>();
+            _axeScript.SetTextMesh(_axeHP.GetComponent<TextMesh>());
+            _axeScript.SetHitBoxArea(_hitBoxArea);
+            _axeScript.SetCurrentHP(dataSO.startHP);
+
+            EnableAxeHP();
+        }     
     }
 
     void CreateChainsaw()
     {
         if (_newChainsaw == null)
         {
-            _chainsawPrefab = Resources.Load<GameObject>("ChainsawWeapon");
-            GameObject _copyChainsaw = Instantiate(_chainsawPrefab, _weaponMuzzle.transform.position, _weaponMuzzle.transform.rotation);
-            _newChainsaw = _copyChainsaw;
-            _newChainsaw.transform.parent = _weaponMuzzle;
-            _newChainsaw.transform.localPosition = new Vector3(-0.003f, 0.04f, -0.044f);
-            _newChainsaw.transform.localEulerAngles = new Vector3(127.551f, 169.113f, -86.07999f);
-            _glowFXs.SetActive(true);
-        }
+            EnableAxeHP();
 
-        BusSystem.CallSoundPlay(SoundEffects.Chainsaw);
+            _chainsawPrefab = Resources.Load<GameObject>("ChainsawWeapon");
+
+            if(_chainsawPrefab != null)
+            {
+                GameObject _copyChainsaw = Instantiate(_chainsawPrefab, _weaponMuzzle.transform.position, _weaponMuzzle.transform.rotation);
+                _newChainsaw = _copyChainsaw;
+                _newChainsaw.transform.parent = _weaponMuzzle;
+                _newChainsaw.transform.localPosition = new Vector3(-0.003f, 0.04f, -0.044f);
+                _newChainsaw.transform.localEulerAngles = new Vector3(127.551f, 169.113f, -86.07999f);
+                
+                _glowFXs.SetActive(true);
+            }
+            
+
+            if (_newAxe != null)
+            {
+                _chainsawTime = _newAxe.GetComponent<Axe>().GetCurrentHP();
+
+                if (_chainsawTime <= 0)
+                    _chainsawTime = 1;
+
+                Destroy(_newAxe);
+            }
+
+            BusSystem.CallSoundPlay(SoundEffects.Chainsaw);
+        }
     }
 
     void DestroyChainsaw()
     {
         _isUsingChainsaw = false;
-        Destroy(_newChainsaw);
-
+        
+        if(_newChainsaw != null)
+        {
+            Destroy(_newChainsaw);
+        }
+            
         if(_newAxe != null)
         {
             _newAxe.SetActive(true);
-            EnableAxeHP();
         }
-        
-        if(isPlaying)
-            anim.Play(Const.WALK_ANIM);
-
-        BusSystem.CallSoundPlay(SoundEffects.Hit1);
     }
 
     void SetIsUsingChainsaw(bool useChainsaw)
     {
         _isUsingChainsaw = useChainsaw;
+
         anim.Play(Const.CHAINSAWWALK_ANIM);
 
         if (useChainsaw)
         {
-            DisableAxeHP();
-            _newAxe.SetActive(false);
+            if(_newAxe != null)
+                _newAxe.SetActive(false);
         }
     }
 
-    void EnableTurboMode()
+    void EnablePhase2()
     {
-        _isInTurboMode = true;
-        DisableAxeHP();
-        Destroy(_newAxe);
+        SetIsUsingChainsaw(true);
+
         anim.Play(Const.CHAINSAWWALK_ANIM);
         CreateChainsaw();
     }
 
-    void DisableTurboMode(bool levelEnd = true)
+    void DisablePhase2(bool levelEnd = true)
     {
-        _isInTurboMode = false;
-        DestroyChainsaw();
+        _isInPhase2 = false;
+    }
+
+    public float GetCurrentHP()
+    {
+        return _chainsawTime;
     }
 
     public Transform GetAxeHP()
@@ -391,20 +440,48 @@ public class CharacterMovement : MonoBehaviour
 
     public void EnableAxeHP()
     {
-        _axeHP.GetComponent<MeshRenderer>().enabled = true;
-        _axeHP.GetChild(0).gameObject.SetActive(true);
-        FunctionTimer.Create(() => _newAxe.GetComponent<Axe>().UpdateAxeText(), .1f);
+        if(_axeHP.GetComponent<MeshRenderer>() != null)
+        {
+            _axeHP.GetComponent<MeshRenderer>().enabled = true;
+        }
+        
+        if(_axeHP.GetChild(0) != null)
+        {
+            _axeHP.GetChild(0).gameObject.SetActive(true);
+        }
+       
+        if (_newAxe != null)
+        {
+            _newAxe.GetComponent<Axe>().UpdateAxeText();
+        }       
     }
 
     public void DisableAxeHP()
     {
-        _axeHP.GetComponent<MeshRenderer>().enabled = false;
-        _axeHP.GetChild(0).gameObject.SetActive(false);
+        if (_axeHP.GetComponent<MeshRenderer>() != null)
+        {
+            _axeHP.GetComponent<MeshRenderer>().enabled = false;
+        }
+
+        if (_axeHP.GetChild(0) != null)
+        {
+            _axeHP.GetChild(0).gameObject.SetActive(false);
+        }
     }
 
     public void PlayHPFXs()
     {
-        _axeHP.GetComponentInChildren<ParticleSystem>().Play();
+        if (_axeHP.GetComponentInChildren<ParticleSystem>() != null)
+        {
+            _axeHP.GetComponentInChildren<ParticleSystem>().Play();
+        }
     }
 
+    public void UpdateHPText()
+    {
+        if(_axeHP.GetComponent<TextMesh>() != null)
+        {
+            _axeHP.GetComponent<TextMesh>().text = Mathf.RoundToInt(_chainsawTime).ToString();
+        } 
+    }
 }

@@ -17,8 +17,6 @@ public class Coin : MonoBehaviour
         mySequence.Append(transform.DOMove(whereTo.position, 1f).SetEase(Ease.InCubic));
         mySequence.PrependInterval(Random.Range(0, 0.5f));
         mySequence.OnComplete(() => {
-            //ShopManager.Instance.AddCoins(10);
-            //BusSystem.CallUpdateCoinUI();
             Destroy(gameObject);
             
         });

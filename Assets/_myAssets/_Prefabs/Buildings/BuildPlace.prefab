@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5540693681444932367}
   - component: {fileID: 8111702402216952825}
+  - component: {fileID: 7066365743603505051}
   m_Layer: 0
   m_Name: BuildPlace
   m_TagString: Untagged
@@ -26,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 3628777962112902086}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.7142857, y: 0.7142857, z: 1}
   m_Children:
   - {fileID: 3081599850229444171}
   - {fileID: 6971865315042270813}
@@ -48,6 +49,19 @@ MonoBehaviour:
   _spendWoodSpeed: 50
   _buildSpeed: 0.2
   _shineFX: {fileID: 3081599850229444172}
+--- !u!65 &7066365743603505051
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3628777962112902086}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3, y: 4, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &3472572517927704728
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -78,7 +92,7 @@ PrefabInstance:
     - target: {fileID: 1942464255585416915, guid: 877bb9ead7698514d90d6ab765632c6c,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.89
+      value: 0.96
       objectReference: {fileID: 0}
     - target: {fileID: 1942464255585416915, guid: 877bb9ead7698514d90d6ab765632c6c,
         type: 3}

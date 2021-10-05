@@ -8,46 +8,50 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject startButton;
-    [SerializeField]
-    private GameObject settingsButton;
-    [SerializeField]
-    private GameObject mainMenuPanel;
-    [SerializeField]
-    private GameObject endScreenWin;
-    [SerializeField]
-    private GameObject endScreenLose;
-    [SerializeField]
-    private GameObject continueButton;
-    [SerializeField]
-    private TextMeshProUGUI levelText;
-    [SerializeField] private TextMeshProUGUI _cutTreesText;
+    //Main Screen
+    [SerializeField] GameObject startButton;
+    [SerializeField] GameObject settingsButton;
+    [SerializeField] GameObject mainMenuPanel;
+    [SerializeField] GameObject endScreenWin;
+    [SerializeField] GameObject endScreenLose;
+    [SerializeField] GameObject _winButtons;
+    
+    //Level
+    [SerializeField] TextMeshProUGUI levelText;
+    [SerializeField] Image _cutTreesText;
+    [SerializeField] Image _perfectIcon;
 
     //Coins
-    [SerializeField]
-    private GameObject coinToSpawn;
-    [SerializeField]
-    private Transform coinContainer;
-    [SerializeField]
-    private Transform coinSpawnOrigin;
-    [SerializeField]
-    private TextMeshProUGUI coinsText;
+    [SerializeField] GameObject coinToSpawn;
+    [SerializeField] Transform coinContainer;
+    [SerializeField] Transform coinSpawnOrigin;
+    [SerializeField] TextMeshProUGUI coinsText;
+    [SerializeField] TextMeshProUGUI _coinsEarnedText;
+
+    //Other
+    [SerializeField] GameObject _tutorial;
+    IEnumerator _storedCoroutine;
 
     private void OnEnable()
     {
         BusSystem.OnLevelDone += HandleLevelDone;
         BusSystem.OnUpdateCoins += HandleUpdateCoins;
-        BusSystem.OnPhaseOneEnd += EnableCutTreesText;
-        BusSystem.OnTreeHit += EarnWood;
+        BusSystem.OnPhaseOneEnd += EnableCutTreesUI;
+        BusSystem.OnAddCash += CollectCash;
+        BusSystem.OnPerfectRound += ShowPerfectIcon;
+        BusSystem.OnNewLevelLoad += HidePerfectIcon;
+        BusSystem.OnNewLevelStart += ShowTutorial;
     }
 
     private void OnDisable()
-    {  
+    {
         BusSystem.OnLevelDone -= HandleLevelDone;
         BusSystem.OnUpdateCoins -= HandleUpdateCoins;
-        BusSystem.OnPhaseOneEnd -= EnableCutTreesText;
-        BusSystem.OnTreeHit -= EarnWood;
+        BusSystem.OnPhaseOneEnd -= EnableCutTreesUI;
+        BusSystem.OnAddCash -= CollectCash;
+        BusSystem.OnPerfectRound -= ShowPerfectIcon;
+        BusSystem.OnNewLevelLoad -= HidePerfectIcon;
+        BusSystem.OnNewLevelStart -= ShowTutorial;
     }
 
     private void Start()
@@ -61,12 +65,22 @@ public class UIManager : MonoBehaviour
         mainMenuPanel.SetActive(false);
     }
 
-    public void LevelEndContinue()
+    public void RetryLevel()
+    {
+        CloseEndScreen();
+    }
+
+    public void AdvanceLevel()
+    {
+        GameManager.Instance.AdvanceLevel();
+        CloseEndScreen();
+    }
+
+    void CloseEndScreen()
     {
         endScreenWin.SetActive(false);
         endScreenLose.SetActive(false);
         mainMenuPanel.SetActive(true);
-
         BusSystem.CallNewLevelLoad();
         levelText.text = string.Format("Level {0}", GameManager.Instance.currentLevel + 1);
     }
@@ -87,11 +101,6 @@ public class UIManager : MonoBehaviour
             _cutTreesText.enabled = false;
             endScreenWin.SetActive(true);
             StartCoroutine(DelayContinueButton());
-           // BusSystem.CallAddCash(100);
-            //for (int i = 0; i < 10; i++)
-            //{
-            //    SpawnCoin(coinSpawnOrigin.transform.position);
-            //}
         }
         else
         {
@@ -106,23 +115,87 @@ public class UIManager : MonoBehaviour
 
     IEnumerator DelayContinueButton()
     {
-        continueButton.SetActive(false);
+        _winButtons.SetActive(false);
         yield return new WaitForSeconds(5f);
-        continueButton.SetActive(true);
+        _winButtons.SetActive(true);
     }
 
-    void EnableCutTreesText()
+    void EnableCutTreesUI()
     {
         _cutTreesText.enabled = true;
-        FunctionTimer.Create(() => _cutTreesText.enabled = false, 4f);
+        Invoke("DisableCutTreesUI", 3f);
     }
 
-    void EarnWood()
+    void DisableCutTreesUI()
     {
-        BusSystem.CallAddCash(3);
-        for (int i = 0; i < 3; i++)
+        _cutTreesText.enabled = false;
+    }
+
+    void CollectCash(int treeHP)
+    {
+        BusSystem.CallSoundPlay(SoundEffects.PickIngot);
+
+        for (int i = 0; i < 10; i++)
         {
             SpawnCoin(coinSpawnOrigin.transform.position);
         }
+
+        ShowCoinsEarnedText(treeHP);
+    }
+
+    void ShowCoinsEarnedText(int amount)
+    {
+        _coinsEarnedText.enabled = false;
+
+        if (_storedCoroutine != null)
+            StopCoroutine(_storedCoroutine);
+
+        _storedCoroutine = HideCoinsEarnedText();
+        _coinsEarnedText.enabled = true;
+        _coinsEarnedText.text = $"+{amount}";
+
+        if (amount >= 100)
+        {
+            _coinsEarnedText.color = Color.green;
+            _coinsEarnedText.enableAutoSizing = false;
+            _coinsEarnedText.fontSize = 80;
+        }
+        else
+        {
+            _coinsEarnedText.color = Color.white;
+            _coinsEarnedText.enableAutoSizing = true;
+            _coinsEarnedText.fontSize = 50;
+        }
+           
+
+        StartCoroutine(_storedCoroutine);
+    }
+
+    IEnumerator HideCoinsEarnedText()
+    {
+        yield return new WaitForSeconds(2.5f);
+        _coinsEarnedText.enabled = false;
+    }
+
+    void ShowPerfectIcon()
+    {
+        _perfectIcon.gameObject.SetActive(true);
+    }
+
+    void HidePerfectIcon()
+    {
+        _perfectIcon.gameObject.SetActive(false);
+    }
+
+    void ShowTutorial()
+    {
+        _tutorial.SetActive(true);
+
+        Invoke("HideTutorial", 3);
+    }
+
+    void HideTutorial()
+    {
+        _tutorial.SetActive(false);
     }
 }
